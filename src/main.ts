@@ -24,7 +24,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-    .setTitle('Sales Appartment API Documentation')
+    .setTitle('Prorab API Documentation')
     .setVersion('1.0')
     .addBearerAuth()
     .addTag('Clients')
