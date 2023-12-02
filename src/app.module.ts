@@ -1,16 +1,20 @@
 import {
-  MiddlewareConsumer,
+  // MiddlewareConsumer,
   Module,
-  NestModule,
-  RequestMethod,
+  // NestModule,
+  // RequestMethod,
 } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join, resolve } from 'path';
+import { join } from 'path';
 import { ScheduleModule } from '@nestjs/schedule';
-import { LoggerMiddleware } from './common/middleware/logger-middleware';
+// import { LoggerMiddleware } from './common/middleware/logger-middleware';
+import { UnitsModule } from './modules/units/units.module';
+import { PaymentsModule } from './modules/payments/payments.module';
+import { ItemsModule } from './modules/items/items.module';
+import { CategoryModule } from './modules/category/category.module';
 
 @Module({
   imports: [
@@ -28,15 +32,15 @@ import { LoggerMiddleware } from './common/middleware/logger-middleware';
     ScheduleModule.forRoot(),
     DatabaseModule,
     ClientsModule,
+    UnitsModule,
+    ItemsModule,
+    PaymentsModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule implements NestModule {
-  constructor(
-  ) {
-  }
-
-  configure(consumer: MiddlewareConsumer) {
-  }
+export class AppModule /* implements NestModule */ {
+  // constructor() {}
+  // configure(consumer: MiddlewareConsumer) {}
 }

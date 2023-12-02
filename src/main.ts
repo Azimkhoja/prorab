@@ -1,11 +1,10 @@
-import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
 import { ValidationPipe } from '@nestjs/common';
-import { join } from 'path';
 
 async function bootstrap() {
   const app: NestExpressApplication = await NestFactory.create(AppModule);
@@ -28,6 +27,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addBearerAuth()
     .addTag('Clients')
+    .addTag('Kassa')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
