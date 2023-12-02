@@ -24,7 +24,7 @@ export class ClientsController {
   @ApiResponse({ status: 201, description: "Mijoz qo'shildi!" })
   @Post('/create')
   createClient(@AuthUser() userId:any,@Body() createClientDto: CreateClientDto) {
-    return this.clientsService.createClient(createClientDto,userId);
+    return this.clientsService.createClient(createClientDto);
   }
 
   @ApiOperation({ summary: "Mavjud mijozlar ro'yxati" })
@@ -45,7 +45,7 @@ export class ClientsController {
     @Param('id') id: number,
     @Body() updateClientDto: UpdateClientDto,
   ) {
-    return this.clientsService.editClientInfo(id, updateClientDto,user_id);
+    return this.clientsService.editClientInfo(id, updateClientDto);
   }
 
   @ApiOperation({ summary: "Mijoz ma'lumotlari" })

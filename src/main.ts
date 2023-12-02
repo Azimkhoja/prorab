@@ -27,7 +27,10 @@ async function bootstrap() {
     .setVersion('1.0')
     .addBearerAuth()
     .addTag('Clients')
-    .addTag('Kassa')
+    .addTag('Category')
+    .addTag('Units')
+    .addTag('Items')
+    .addTag('Payments')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

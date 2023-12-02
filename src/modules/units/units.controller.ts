@@ -2,33 +2,36 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UnitsService } from './units.service';
 import { CreateUnitDto } from './dto/create-unit.dto';
 import { UpdateUnitDto } from './dto/update-unit.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Units')
 @Controller('units')
 export class UnitsController {
   constructor(private readonly unitsService: UnitsService) {}
 
-  @Post()
-  create(@Body() createUnitDto: CreateUnitDto) {
-    return this.unitsService.create(createUnitDto);
+  @ApiOperation({summary: "Units qo'shish"})
+  @Post('/add')
+  createUnits(@Body() createUnitsDto: CreateUnitDto) {
+    return this.unitsService.create(createUnitsDto);
   }
 
-  @Get()
-  findAll() {
-    return this.unitsService.findAll();
-  }
-
+  @ApiOperation({summary: "Units lar ro'yxatini olish"})
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.unitsService.findOne(+id);
+    return this.unitsService.findUnits(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUnitDto: UpdateUnitDto) {
-    return this.unitsService.update(+id, updateUnitDto);
+  @ApiOperation({summary: "Units tahrirlash"})
+  @Patch('/edit/:id')
+  update(@Param('id') id: string, @Body() updateUnitsDto: UpdateUnitDto) {
+    return this.unitsService.updateUnits(+id, updateUnitsDto);
   }
-
+  
+  
+  @ApiOperation({summary: "Units O'chirish"})
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.unitsService.remove(+id);
   }
+
 }
