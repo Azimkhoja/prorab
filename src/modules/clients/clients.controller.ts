@@ -19,7 +19,6 @@ import {AuthUser} from "../../common/decorators/auth-user.decorator";
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 
-  @ApiBearerAuth()
   @ApiOperation({ summary: "Yangi mijoz qo'shish" })
   @ApiResponse({ status: 201, description: "Mijoz qo'shildi!" })
   @Post('/create')
@@ -36,13 +35,10 @@ export class ClientsController {
     return this.clientsService.findAllClients(offset, limit);
   }
 
-  //@Roles('admin', 'manager')
-  @ApiBearerAuth()
   @ApiOperation({ summary: "Mijoz ma'lumotlarini tahrirlash" })
   @ApiResponse({ status: 200, description: "Mijoz ma'lumotlari tahrirlandi." })
   @Patch('/edit/:id')
-  updateClient(@AuthUser() user_id:any,
-    @Param('id') id: number,
+  updateClient(@Param('id') id: number,
     @Body() updateClientDto: UpdateClientDto,
   ) {
     return this.clientsService.editClientInfo(id, updateClientDto);

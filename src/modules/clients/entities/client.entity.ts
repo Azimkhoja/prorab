@@ -7,12 +7,12 @@ export class Clients extends Model {
   @Column()
   name: string;
 
-  @Column({nullable: true})
+  @Column({nullable: true, unique: true})
   phone_number: string;
 
   @Column({ nullable: true })
   description: string;
 
-  @OneToMany(() => Payments, payments => payments.clients)
+  @OneToMany(() => Payments, payments => payments.clients, {nullable: true})
   payments: Payments[];
 }

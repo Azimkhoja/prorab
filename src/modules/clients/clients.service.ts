@@ -14,9 +14,8 @@ export class ClientsService {
   async createClient(createClientDto: CreateClientDto) {
     try {
       
-      const client = await this.clientRepo.findOne({where: {name: createClientDto.name}})
-
-      if (client) {
+      const client = await this.clientRepo.findBy({name: createClientDto.name})
+      if (client.length != 0) {
         return {
           status: 409,
           success: true,
@@ -25,11 +24,15 @@ export class ClientsService {
       }
 
       let newClient = new Clients();
-     
+     newClient.name = createClientDto.name;
+     newClient.phone_number = createClientDto.phone_number;
+     newClient.description = createClientDto.description;
+
+     newClient = await this.clientRepo.save(newClient);
+
       return {
         status: 200,
         success: true,
-        data: newClient,
         message: "Mijoz ro'yxatga qo'shildi",
       };
     } catch (error) {
@@ -47,7 +50,6 @@ export class ClientsService {
       skip: offset,
       take: limit,
       order: { id: 'desc' },
-      relations: ['users'],
     });
     return { status: 200, data: clients, message: "Mijozlar ro'yxati" };
   }
@@ -55,7 +57,7 @@ export class ClientsService {
   async findOneClient(id: number) {
     const client = await this.clientRepo.findBy({ id: id });
     if (!client) {
-      return { status: 400, message: 'client not fount' };
+      return { status: 400, message: 'Client not found' };
     }
     return { status: 200, data: client, message: 'success' };
   }
@@ -66,7 +68,7 @@ export class ClientsService {
       if (updatedClient.affected) {
         return {
           success: true,
-          message: "Mijoz ma'lumotalri tahrirlandi",
+          message: "Mijoz ma'lumotlari tahrirlandi",
         };
       } else {
         return {

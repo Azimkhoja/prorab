@@ -5,7 +5,7 @@ export class CreateClientDto {
   name: string;
 
   @ApiProperty({ example: '+998 90 112 2442', description: 'mijoz tel raqami' })
-  contact_number: string;
+  phone_number: string;
 
 
   @ApiProperty({ example: 'izoh' })
