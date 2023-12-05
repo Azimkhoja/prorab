@@ -1,4 +1,4 @@
-import { Items } from "src/modules/items/entities/item.entity";
+import { Counter } from "src/modules/counter/entities/counter.entity";
 import Model from "src/modules/model/model.module";
 import { Column, Entity, OneToMany } from "typeorm";
 
@@ -11,6 +11,8 @@ export class Units  extends Model {
     @Column()
     name_alias: string;
 
-    @OneToMany(() => Items, item => item.units)
-    items: Items[]
+    @OneToMany(() => Counter, item => item.units)
+    counters: Counter[]
+
+
 }

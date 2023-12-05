@@ -1,11 +1,11 @@
 import { Clients } from 'src/modules/clients/entities/client.entity';
-import { Items } from 'src/modules/items/entities/item.entity';
+import { Counter } from 'src/modules/counter/entities/counter.entity';
 import Model from 'src/modules/model/model.module';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity('Payments')
 export class Payments extends Model {
-  @Column({ type: 'decimal', scale: 2, precision: 20 })
+  @Column({ type: 'decimal', scale: 2, precision: 20, default: 0})
   amount: number;
 
   @Column()
@@ -17,11 +17,11 @@ export class Payments extends Model {
   @Column()
   date: Date;
 
-  @ManyToOne(() => Items, items => items.payments)
-  items: Items;
+  @ManyToOne(() => Counter, counter => counter.payments)
+  counters: Counter;
 
-  @JoinColumn({name: 'item_id'})
-  item_id: number
+  @JoinColumn({name: 'counter_id'})
+  counter_id: number
   
   @ManyToOne(() => Clients, clients => clients.payments)
   clients: Clients;
