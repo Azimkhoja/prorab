@@ -44,15 +44,27 @@ export class ItemsService {
       response.NotFound("Items not found")
   }
   }
+
+  async findSubCategory(category_id: number ){
+    const items = await this.itemsRepo.find({where: {category_id: category_id}})
+    if(items.length != 0){
+      response.Ok(200, 'items those related with this category', items)
+    }else{
+      response.NotFound("items not found")
+    }
+  }
+  
   async update(id: number, updateItemDto: UpdateItemDto) {
       const updatedItem = await this.itemsRepo.update({id: id}, updateItemDto)
       if(updatedItem.affected) {
         response.Ok(200, "Tahrirlandi")
       }else {
-        response.NotFound("Xarajat topilmadi")
+        response.NotFound("Xarajat nomi topilmadi")
       }
   }
 
+
+  // database ni tozalaydigan funksiya
   async clearDatabase() {
     const connection = this.itemsRepo.manager.connection;
     const queryRunner = connection.createQueryRunner();
