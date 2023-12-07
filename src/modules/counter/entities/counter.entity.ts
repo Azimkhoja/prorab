@@ -11,18 +11,22 @@ export class Counter extends Model {
     qty: number
     
     @ManyToOne(() => Units, units => units.counters)
-    units: Units
-
+    
     @JoinColumn({name: "unit_id"})
+    units: Units
+    
+    @Column()
     unit_id: number
     
     @ManyToOne(() => Items, items => items.counters)
-    items: Items;
     
     @JoinColumn({name: "item_id"})
+    items: Items;
+    
+    @Column()
     item_id: number
 
-    @OneToMany(() => Payments, payments => payments.counters)
+    @OneToMany(() => Payments, payments => payments.counters, {nullable: true})
     payments: Payments[];
 
 }
