@@ -4,6 +4,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Repository } from 'typeorm';
 import { Category } from './entities/category.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { response } from 'src/common/response/common-responses';
 
 @Injectable()
 export class CategoryService {
@@ -14,10 +15,7 @@ export class CategoryService {
     const old_category = await this.categoryRepo.findBy({name: createCategoryDto.name})
     
     if(old_category.length != 0 ){
-      return {
-        status: 409,
-        success: true,
-        message: 'Kategoriya allaqachon mavjud!',}
+      return response.AlreadyExists(409, "Kategoriya allaqachon mavjud!") 
     }
 
     let new_category = new Category()
@@ -26,11 +24,7 @@ export class CategoryService {
 
     new_category = await this.categoryRepo.save(new_category)
   
-    return {
-      status: 201,
-      success: true,
-      message: "Kategoriya qo'shildi"
-    }
+    return response.Ok(201, "yaratildi", )
 
   }
 
@@ -42,17 +36,9 @@ export class CategoryService {
       category = await this.categoryRepo.find()
     }
     if(!category || category.length == 0){
-      return {
-        status: 404,
-        success: false,
-        message: "Category not found"
-      }
+      return response.NotFound("No category found")
     }
-    return {
-      status: 200,
-      success: true,
-      data: category
-    }
+    return response.Ok(200, "OK", category)
   }
 
   async updateCategory(id: number, updateCategoryDto: UpdateCategoryDto) {
