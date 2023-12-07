@@ -16,17 +16,21 @@ export class Payments extends Model {
 
   @Column()
   date: Date;
-
+  
   @ManyToOne(() => Counter, counter => counter.payments)
-  counters: Counter;
-
+  
   @JoinColumn({name: 'counter_id'})
+  counters: Counter;
+  
+  @Column({nullable: true})
   counter_id: number
   
   @ManyToOne(() => Clients, clients => clients.payments)
-  clients: Clients;
   
   @JoinColumn({name: 'client_id'})
+  clients: Clients;
+  
+  @Column({nullable:true})
   client_id: number
 
 }

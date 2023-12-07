@@ -14,14 +14,14 @@ export class PaymentsController {
     return this.paymentsService.toPay(createPaymentDto);
   }
 
-  @Get()
-  findAll() {
-    return this.paymentsService.findAll();
+  @Get('/all-one/:id')
+  findAll(@Param('id') id: number) {
+    return this.paymentsService.findAll(id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.paymentsService.findOne(+id);
+  @Post('/select')
+  expenseOrRevenue(@Body() is_expense: boolean) {
+    return this.paymentsService.findExpensesAndRevenues(is_expense)
   }
 
   @Patch(':id')
