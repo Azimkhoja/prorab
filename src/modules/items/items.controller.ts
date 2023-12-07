@@ -20,9 +20,14 @@ export class ItemsController {
     return this.itemsService.findOne(+id);
   }
 
+  @Get('/related/:id')
+  findRelatedItems(@Param('id') id: number) {
+    return this.itemsService.findSubCategory(id);
+  }
+
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
-    return this.itemsService.update(+id, updateItemDto);
+  update(@Param('id') id: number, @Body() updateItemDto: UpdateItemDto) {
+    return this.itemsService.update(id, updateItemDto);
   }
 
   @ApiOperation({

@@ -13,6 +13,6 @@ export class Clients extends Model {
   @Column({ nullable: true })
   description: string;
 
-  @OneToMany(() => Payments, payments => payments.clients, {nullable: true})
+  @OneToMany(() => Payments, payments => payments.clients)
   payments: Payments[];
 }

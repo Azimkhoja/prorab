@@ -17,7 +17,7 @@ export class ItemsService {
     const newItem = await this.itemsRepo.findOne({where: {name: createItemDto.name}})
     
     if(newItem){
-      response.AlreadyExists(409, "xarajat turi allaqachon mavjud!")
+      return response.AlreadyExists(409, "xarajat turi allaqachon mavjud!")
     }
 
     let item = new Items()
@@ -27,7 +27,7 @@ export class ItemsService {
     
     item = await this.itemsRepo.save(item)
   
-    response.Ok(201, "Xarajat turi yaratildi",item )
+    return response.Ok(201, "Xarajat turi yaratildi",item )
   }
 
   async findOne(id: number) {
@@ -39,27 +39,27 @@ export class ItemsService {
     }
 
     if(items && items.length != 0){
-      response.Ok(200, items )
+     return response.Ok(200,"itmes", items )
     }else {
-      response.NotFound("Items not found")
+      return response.NotFound("Items not found")
   }
   }
 
   async findSubCategory(category_id: number ){
     const items = await this.itemsRepo.find({where: {category_id: category_id}})
     if(items.length != 0){
-      response.Ok(200, 'items those related with this category', items)
+      return response.Ok(200, 'items those related with this category', items)
     }else{
-      response.NotFound("items not found")
+      return response.NotFound("items not found")
     }
   }
   
   async update(id: number, updateItemDto: UpdateItemDto) {
       const updatedItem = await this.itemsRepo.update({id: id}, updateItemDto)
       if(updatedItem.affected) {
-        response.Ok(200, "Tahrirlandi")
+        return response.Ok(200, "Tahrirlandi")
       }else {
-        response.NotFound("Xarajat nomi topilmadi")
+        return response.NotFound("Xarajat nomi topilmadi")
       }
   }
 

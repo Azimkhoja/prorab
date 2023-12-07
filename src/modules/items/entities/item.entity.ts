@@ -12,9 +12,11 @@ export class Items extends Model {
   name_alias: string;
 
   @ManyToOne(()=> Category, category=> category.items)
-  category: Category; 
   
   @JoinColumn({name: "category_id"})
+  category: Category; 
+  
+  @Column()
   category_id: number;
 
   @OneToMany(() => Counter, counter => counter.items, {nullable:true})
