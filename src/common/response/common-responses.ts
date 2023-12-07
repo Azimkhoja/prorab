@@ -20,5 +20,13 @@ export const response = {
             success: false,
             message
         }
+    },
+    Failed (statusCode:number, message?: string, error?: any) {
+        return {
+            status: statusCode,
+            success: false,
+            message,
+            error
+        }
     }
 }
