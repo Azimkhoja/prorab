@@ -4,6 +4,7 @@ import { Clients } from './entities/client.entity';
 import { Repository } from 'typeorm';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+import { response } from 'src/common/response/common-responses';
 
 @Injectable()
 export class ClientsService {
@@ -16,11 +17,7 @@ export class ClientsService {
       
       const client = await this.clientRepo.findBy({name: createClientDto.name})
       if (client.length != 0) {
-        return {
-          status: 409,
-          success: true,
-          message: 'Mijoz allaqachon mavjud!',
-        };
+        return response.AlreadyExists(409, "Client already exists")
       }
 
       let newClient = new Clients();
@@ -30,59 +27,44 @@ export class ClientsService {
 
      newClient = await this.clientRepo.save(newClient);
 
-      return {
-        status: 200,
-        success: true,
-        message: "Mijoz ro'yxatga qo'shildi",
-      };
+      return response.Ok(201, "Successfully created")
     } catch (error) {
       if (error.code === '23505') {
-        return {
-          message: 'Duplicate key value violates unique constraint',
-          status: 409,
-        };
+        return response.AlreadyExists(409, "Client already exists")
       }
     }
   }
 
-  async findAllClients(offset: number, limit: number) {
+  async findAllClients() {
     const clients = await this.clientRepo.find({
-      skip: offset,
-      take: limit,
       order: { id: 'desc' },
     });
-    return { status: 200, data: clients, message: "Mijozlar ro'yxati" };
+    return response.Ok(200, "clients", clients)
   }
 
   async findOneClient(id: number) {
-    const client = await this.clientRepo.findBy({ id: id });
-    if (!client) {
-      return { status: 400, message: 'Client not found' };
+    const client = await this.clientRepo.createQueryBuilder('clients')
+    .leftJoin('clients.payments', 'payment')
+    .where(`id IS ${id}`)
+    .getRawMany()
+
+    if (client.length != 0) {
+      return response.Ok(200, "clients", client)
     }
-    return { status: 200, data: client, message: 'success' };
+    return response.NotFound("Clients not found")
   }
 
   async editClientInfo(id: number, updateClientDto: UpdateClientDto) {
     try {
       const updatedClient = await this.clientRepo.update({id: id}, updateClientDto);
       if (updatedClient.affected) {
-        return {
-          success: true,
-          message: "Mijoz ma'lumotlari tahrirlandi",
-        };
+        return response.Ok(200, "mijoz tahrirlandi")
       } else {
-        return {
-          success: false,
-          message: 'Mijoz tahrirlanmadi',
-        };
+        return response.NotFound("mijoz topilmadi")
       }
     } catch (error) {
       if (error.code === '23505') {
-        return {
-          status: 409,
-          message: 'Duplicate key value violates unique constraint',
-          errorcode: error.code,
-        };
+        return response.Failed(409, "mijoz oldindan mavjud", error.code)
       }
     }
   }

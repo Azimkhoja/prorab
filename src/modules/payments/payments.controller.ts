@@ -3,6 +3,7 @@ import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { SelectPaymentDto } from './dto/expense-or-revenue.dto';
 
 @ApiTags('Payments')
 @Controller('payments')
@@ -20,7 +21,7 @@ export class PaymentsController {
   }
 
   @Post('/select')
-  expenseOrRevenue(@Body() is_expense: boolean) {
+  expenseOrRevenue(@Body() is_expense: SelectPaymentDto) {
     return this.paymentsService.findExpensesAndRevenues(is_expense)
   }
 

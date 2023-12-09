@@ -29,10 +29,8 @@ export class ClientsController {
   @ApiOperation({ summary: "Mavjud mijozlar ro'yxati" })
   @ApiResponse({ status: 200, type: Clients })
   @Get('/all')
-  getAllClients(@Query('page') page: number) {
-    const limit = 20;
-    const offset = (page - 1) * limit;
-    return this.clientsService.findAllClients(offset, limit);
+  getAllClients() {
+    return this.clientsService.findAllClients();
   }
 
   @ApiOperation({ summary: "Mijoz ma'lumotlarini tahrirlash" })

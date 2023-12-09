@@ -44,15 +44,14 @@ export class CategoryService {
   async updateCategory(id: number, updateCategoryDto: UpdateCategoryDto) {
     const check = await this.categoryRepo.findBy({name: updateCategoryDto.name})
     if(check.length){
-      return {status: 409, message: "Category already exists"}
+      return response.AlreadyExists(409, "Category already exists")
 
     }
     const updateCategory = await this.categoryRepo.update({id: id}, updateCategoryDto)
     if(updateCategory.affected){
-      return {status: 200, message: "Category updated successfully"}
+      return response.Ok(200, "Category updated")
     }else {
-      return {status: 404, message: "Category not found"}
-      
+      return response.NotFound("Category not found")      
     }
   }
 
@@ -60,18 +59,10 @@ export class CategoryService {
     const remCategory = await this.categoryRepo.delete({id: id})
   
     if(remCategory.affected){
-      return {
-        status: 200,
-        success: true,
-        message: "Category deleted successfully"
-      }
+      return response.Ok(200, "Category deleted")
     }
       else {
-      return {
-        status: 404,
-        success: false,
-        message: "Category not found"
-      }
+      return response.NotFound("Category not found")
         
       }
 

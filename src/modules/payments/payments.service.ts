@@ -9,16 +9,7 @@ import { Counter } from 'src/modules/counter/entities/counter.entity';
 import { ItemsService } from '../items/items.service';
 import { CounterService } from '../counter/counter.service';
 import { response } from 'src/common/response/common-responses';
-
-//      client_id
-//      amount
-//      usd_rate
-//      amount_usd
-//      date
-//      counter_id
-//      item_id
-//      unit_id
-//      qty
+import { SelectPaymentDto } from './dto/expense-or-revenue.dto';
 
 @Injectable()
 export class PaymentsService {
@@ -36,10 +27,12 @@ export class PaymentsService {
     
     try {
       let dollar, sum, clientID, counterID;
-      // counter yaratish yani to'lovni hisobga oluvchini
-      const item = await this.itemsService.findOne(createPaymentDto.item_id)
 
+      const item = await this.itemsService.findOne(createPaymentDto.item_id)
+      
       if(createPaymentDto.client_id === null){
+        
+        // counter yaratish yani to'lovni hisobga oluvchini
         const counter = await this.counterService.createCounter({qty: createPaymentDto.qty, unit_id: createPaymentDto.unit_id,item_id:item['data'].id})
         clientID = null
         counterID = counter.data['id']
@@ -63,6 +56,7 @@ export class PaymentsService {
       // responsening counter_id si null bo'lsa bu kirim to'lovi boladi aks holda chiqim
 
       // to'lovni amalga oshirish
+      
       const payment = new Payments()
       payment.amount = sum
       payment.usd_rate = createPaymentDto.usd_rate
@@ -97,15 +91,29 @@ export class PaymentsService {
    }
   }
 
-  async findExpensesAndRevenues(is_expense: boolean) {
+  async findExpensesAndRevenues(selectPaydto: SelectPaymentDto) {
     let records
-    if(is_expense["is_expense"]){
-      records = await this.paymentRepo.find({where: {client_id: null}, relations: ['counters.items.category' ]})
-    }else {
-      records = await this.paymentRepo.find({where: {counter_id: null}, relations: ['clients']})
-    }
+    
+      if(selectPaydto.is_expense){
 
-    if(records.length != 0) {
+        records = await this.paymentRepo.createQueryBuilder('payments')
+        .leftJoinAndSelect('payments.counters', 'counter')
+        .leftJoinAndSelect('counter.units', 'unit')
+        .leftJoinAndSelect('counter.items', 'item')
+        .leftJoinAndSelect('item.category', 'category')
+        .where(`client_id IS NULL`)
+        .getRawMany()
+
+      }else {
+
+        records = await this.paymentRepo.createQueryBuilder('payments')
+        .leftJoinAndSelect('payments.clients', 'client')
+        .where(`counter_id IS NULL`)
+        .getRawMany()
+        
+      }
+      
+      if(records.length != 0) {
 
       return response.Ok(200, "payments", records)
     }else {
