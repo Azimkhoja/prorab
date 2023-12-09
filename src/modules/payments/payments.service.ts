@@ -122,6 +122,25 @@ export class PaymentsService {
     }
   }
 
+  async calculateInAndOutPayments() {
+      const allPayments = await this.paymentRepo.find()
+
+      const { incomingPayment, outgoingPayment } = allPayments.reduce(
+        (totals, payment) => {
+          if (payment.client_id !== null) {
+            totals.incomingPayment += +payment.amount;
+          }
+          if (payment.counter_id !== null) {
+            totals.outgoingPayment += +payment.amount;
+          }
+          return totals;
+        },
+        { incomingPayment: 0, outgoingPayment: 0 }
+      );
+      console.log(incomingPayment, "incoming", outgoingPayment, "outgoing");
+      return allPayments
+    }
+
   update(id: number, updatePaymentDto: UpdatePaymentDto) {
     return `This action updates a #${id} payment`;
   }

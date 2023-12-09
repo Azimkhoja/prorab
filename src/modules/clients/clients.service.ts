@@ -44,8 +44,8 @@ export class ClientsService {
 
   async findOneClient(id: number) {
     const client = await this.clientRepo.createQueryBuilder('clients')
-    .leftJoin('clients.payments', 'payment')
-    .where(`id IS ${id}`)
+    .leftJoinAndSelect('clients.payments', 'payment')
+    .where('payment.client_id = :id', { id })
     .getRawMany()
 
     if (client.length != 0) {

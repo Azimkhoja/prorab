@@ -34,4 +34,9 @@ export class PaymentsController {
   remove(@Param('id') id: string) {
     return this.paymentsService.remove(+id);
   }
+
+  @Get('/stats')
+  incomingAndOutgoingPayments() {
+    return this.paymentsService.calculateInAndOutPayments()
+  }
 }
