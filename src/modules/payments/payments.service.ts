@@ -150,7 +150,7 @@ export class PaymentsService {
     
     if(oldDate.amount != updatePaymentDto.amount){
       oldDate.amount = updatePaymentDto.amount
-      oldDate.amount_usd
+      oldDate.amount_usd 
     }
     const updatePayment = await this.paymentRepo.update(id, updatePaymentDto) 
     

@@ -28,6 +28,7 @@ export class AuthService {
 
     // Hash password
     const hash = await this.hashData(createUserDto.password);
+
     const newUser = await this.usersService.create({
       ...createUserDto,
       password: hash,
@@ -38,14 +39,22 @@ export class AuthService {
   }
 
   async signIn(data: AuthDto) {
-    // Check if user exists
+    // foydalanuvchi bor yoki yo'qligin tekshiradi
     const user = await this.usersService.findByUsername(data.username);
-    if (!user) throw new BadRequestException('User does not exist');
+
+    // agar foydalanuvchi topilmasa xatolik qaytaradi(User not found) 
+    if (!user) throw new BadRequestException('invalid username or password');
+
+    //loginda kiritgan parol bilan database dagi parolni mosh kelishini tekshiradi
+    
     const passwordMatches = await argon2.verify(user.password, data.password);
+    
     if (!passwordMatches)
       throw new BadRequestException('Password is incorrect');
+    
     const tokens = await this.getTokens(user.id, user.username);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
+    
     return tokens;
   }
 

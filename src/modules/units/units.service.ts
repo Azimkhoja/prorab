@@ -35,7 +35,7 @@ export class UnitsService {
     }else {
       units = await this.unitsRepo.find()
     }
-    if(!units || units.length == 0){
+    if(!units && units.length == 0){
       return response.NotFound("Units not found")
     }
     return response.Ok(200, "units", units)

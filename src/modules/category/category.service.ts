@@ -35,7 +35,7 @@ export class CategoryService {
     }else {
       category = await this.categoryRepo.find()
     }
-    if(!category || category.length == 0){
+    if(!category && category.length == 0){
       return response.NotFound("No category found")
     }
     return response.Ok(200, "OK", category)

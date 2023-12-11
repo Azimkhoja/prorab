@@ -19,7 +19,7 @@ export class User extends Model{
     @Column({nullable:true})
     token: string;
     
-    @Column()
+    @Column({default: true})
     is_active: boolean;
 
 }
