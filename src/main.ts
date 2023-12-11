@@ -26,6 +26,8 @@ async function bootstrap() {
     .setTitle('Prorab API Documentation')
     .setVersion('1.0')
     .addBearerAuth()
+    .addTag('Users')
+    .addTag('Auth')
     .addTag('Clients')
     .addTag('Category')
     .addTag('Units')

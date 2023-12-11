@@ -15,6 +15,8 @@ import { UnitsModule } from './modules/units/units.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { ItemsModule } from './modules/items/items.module';
 import { CategoryModule } from './modules/category/category.module';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -26,9 +28,6 @@ import { CategoryModule } from './modules/category/category.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads/images'),
-    }),
     ScheduleModule.forRoot(),
     DatabaseModule,
     ClientsModule,
@@ -36,6 +35,8 @@ import { CategoryModule } from './modules/category/category.module';
     ItemsModule,
     PaymentsModule,
     CategoryModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

@@ -32,5 +32,9 @@ export class Payments extends Model {
   
   @Column({nullable:true})
   client_id: number
+  
+  
+  @Column({type: 'boolean', default: false})
+  is_deleted: boolean
 
 }

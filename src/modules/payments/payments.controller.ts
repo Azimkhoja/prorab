@@ -26,13 +26,13 @@ export class PaymentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaymentDto: UpdatePaymentDto) {
-    return this.paymentsService.update(+id, updatePaymentDto);
+  update(@Param('id') id: number, @Body() updatePaymentDto: UpdatePaymentDto) {
+    return this.paymentsService.update(id, updatePaymentDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paymentsService.remove(+id);
+  @Delete('/rem/:')
+  remove(@Param('id') id: number) {
+    return this.paymentsService.remove(id); 
   }
 
   @Get('/stats')

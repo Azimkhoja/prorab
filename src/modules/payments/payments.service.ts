@@ -3,9 +3,8 @@ import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Payments } from './entities/payment.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CurrencyType } from 'src/common/enums/currency-type';
-import { Counter } from 'src/modules/counter/entities/counter.entity';
 import { ItemsService } from '../items/items.service';
 import { CounterService } from '../counter/counter.service';
 import { response } from 'src/common/response/common-responses';
@@ -137,15 +136,34 @@ export class PaymentsService {
         },
         { incomingPayment: 0, outgoingPayment: 0 }
       );
-      console.log(incomingPayment, "incoming", outgoingPayment, "outgoing");
-      return allPayments
+
+      if(allPayments.length != 0) {
+        return {income: incomingPayment, outgoing: outgoingPayment, kassa: incomingPayment - outgoingPayment}
+      }
+      else {
+        return response.NotFound("No payments available");
+      }
     }
 
-  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    return `This action updates a #${id} payment`;
+  async  update(id: number, updatePaymentDto: UpdatePaymentDto) {
+    const updatePayment = await this.paymentRepo.update(id, updatePaymentDto) 
+    if(updatePayment.affected) {
+      return response.Ok(200, "Tahrirlandi")
+    }else {
+      return response.NotFound("topilmadi");
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
+  
+  async  remove(id: number) {
+    
+    const payment = await this.paymentRepo.update({id: id}, {is_deleted: true})
+    
+    if(payment.affected){
+        return response.Ok(200, "deleted")
+      }else {
+        return response.NotFound("payment not found");
+      }
   }
+
 }
