@@ -81,7 +81,7 @@ export class PaymentsService {
     if(id != 0) {
       payments = await this.paymentRepo.findOne({where: {id: id}})
     }else {
-      payments = await this.paymentRepo.find()
+      payments = await this.paymentRepo.find({relations:['clients', 'counters.items.category', 'counters.units']})
     }
     if(payments && payments.length != 0){
        return response.Ok(200,"payments", payments )
@@ -146,7 +146,14 @@ export class PaymentsService {
     }
 
   async  update(id: number, updatePaymentDto: UpdatePaymentDto) {
+    const oldDate = await this.paymentRepo.findOne({where: {id}})
+    
+    if(oldDate.amount != updatePaymentDto.amount){
+      oldDate.amount = updatePaymentDto.amount
+      oldDate.amount_usd
+    }
     const updatePayment = await this.paymentRepo.update(id, updatePaymentDto) 
+    
     if(updatePayment.affected) {
       return response.Ok(200, "Tahrirlandi")
     }else {
