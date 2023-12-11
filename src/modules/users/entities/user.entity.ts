@@ -16,7 +16,7 @@ export class User extends Model{
     @Column({nullable:false})
     password:string;
         
-    @Column()
+    @Column({nullable:true})
     token: string;
     
     @Column()
