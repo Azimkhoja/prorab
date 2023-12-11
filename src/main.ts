@@ -12,9 +12,8 @@ async function bootstrap() {
   app.setGlobalPrefix('/api');
   app.enableCors({
     origin: [
+      'https://qulay-savdo.netlify.app',
       'http://localhost:5173',
-      'https://oxygenhouse.uz',
-      'https://oxy.brainsmart.uz',
     ],
     credentials: true,
     exposedHeaders: ['set-cookie'],

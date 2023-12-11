@@ -46,7 +46,7 @@ export class AuthService {
     if (!user) throw new BadRequestException('invalid username or password');
 
     //loginda kiritgan parol bilan database dagi parolni mosh kelishini tekshiradi
-    
+
     const passwordMatches = await argon2.verify(user.password, data.password);
     
     if (!passwordMatches)
