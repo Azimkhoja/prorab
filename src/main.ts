@@ -12,7 +12,7 @@ async function bootstrap() {
   app.setGlobalPrefix('/api');
   app.enableCors({
     origin: [
-      'https://qulay-savdo.netlify.app',
+      // 'https://qulay-savdo.netlify.app',
       'http://localhost:5173',
     ],
     credentials: true,
