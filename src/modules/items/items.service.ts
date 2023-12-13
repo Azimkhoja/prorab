@@ -57,19 +57,19 @@ export class ItemsService {
   async  remove(id: number) {
 
     try {
-      const remCategory = await this.itemsRepo.delete({id: id})
+      const remItem = await this.itemsRepo.delete({id: id})
   
 
-      if(remCategory.affected){
-        return response.Ok(200, "Category deleted")
+      if(remItem.affected){
+        return response.Ok(200, "Item deleted")
       }
         else {
-        return response.NotFound("Category not found")
+        return response.NotFound("Item not found")
           
         }
     } catch (error) {
       if (error.code === '23503') {
-        return response.Failed(400, "Category o'chirib bolmaydi", error.message)
+        return response.Failed(400, "Item o'chirib bolmaydi", error.message)
       } else {
         console.error('Other error:', error.message);
       }

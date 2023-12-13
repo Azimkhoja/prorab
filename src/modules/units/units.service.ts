@@ -69,6 +69,8 @@ async  remove(id: number) {
   } catch (error) {
     if(error.code === "23503"){
       return response.Failed(400, "O'lchov birligi o'chirilmaydi")
+    }else {
+      console.log("Other error", error.message);
     }
   }
 }

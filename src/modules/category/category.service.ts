@@ -58,10 +58,10 @@ export class CategoryService {
   async  remove(id: number) {
 
     try {
-      const remItem = await this.categoryRepo.delete({id: id})
+      const remCategory = await this.categoryRepo.delete({id: id})
   
 
-      if(remItem.affected){
+      if(remCategory.affected){
         return response.Ok(200, "Category deleted")
       }
         else {
