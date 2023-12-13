@@ -25,6 +25,10 @@ export class ItemsController {
     return this.itemsService.findSubCategory(id);
   }
 
+  @Delete('remove/:id')
+  deleteItems(@Param('id') id: number) {
+    return this.itemsService.remove(id)
+  }
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateItemDto: UpdateItemDto) {
     return this.itemsService.update(id, updateItemDto);

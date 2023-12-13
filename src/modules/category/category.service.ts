@@ -56,15 +56,25 @@ export class CategoryService {
   }
 
   async  remove(id: number) {
-    const remCategory = await this.categoryRepo.delete({id: id})
-  
-    if(remCategory.affected){
-      return response.Ok(200, "Category deleted")
-    }
-      else {
-      return response.NotFound("Category not found")
-        
-      }
 
+    try {
+      const remItem = await this.categoryRepo.delete({id: id})
+  
+
+      if(remItem.affected){
+        return response.Ok(200, "Category deleted")
+      }
+        else {
+        return response.NotFound("Category not found")
+          
+        }
+    } catch (error) {
+      if (error.code === '23503') {
+        return response.Failed(400, "Items ochirib bolmaydi ", error.message)
+      } else {
+        console.error('Other error:', error.message);
+      }
+    }
+   
   }
 }

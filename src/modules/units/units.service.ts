@@ -56,7 +56,8 @@ export class UnitsService {
     }
 }
 async  remove(id: number) {
-  const remUnits = await this.unitsRepo.delete({id: id})
+  try {
+    const remUnits = await this.unitsRepo.delete({id: id})
 
   if(remUnits.affected){
     return response.Ok(200, "Units removed successfully")
@@ -65,6 +66,10 @@ async  remove(id: number) {
     return response.NotFound("Units not found")
       
     }
-
+  } catch (error) {
+    if(error.code === "23503"){
+      return response.Failed(400, "O'lchov birligi o'chirilmaydi")
+    }
+  }
 }
 }

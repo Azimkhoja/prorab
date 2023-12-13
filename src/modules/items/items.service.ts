@@ -54,6 +54,29 @@ export class ItemsService {
     }
   }
   
+  async  remove(id: number) {
+
+    try {
+      const remCategory = await this.itemsRepo.delete({id: id})
+  
+
+      if(remCategory.affected){
+        return response.Ok(200, "Category deleted")
+      }
+        else {
+        return response.NotFound("Category not found")
+          
+        }
+    } catch (error) {
+      if (error.code === '23503') {
+        return response.Failed(400, "Category o'chirib bolmaydi", error.message)
+      } else {
+        console.error('Other error:', error.message);
+      }
+    }
+   
+  }
+
   async update(id: number, updateItemDto: UpdateItemDto) {
       const updatedItem = await this.itemsRepo.update({id: id}, updateItemDto)
       if(updatedItem.affected) {
