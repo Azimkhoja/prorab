@@ -8,7 +8,7 @@ export class Units  extends Model {
     @Column({nullable: false})
     name: string;
 
-    @Column()
+    @Column({nullable: true})
     name_alias: string;
 
     @OneToMany(() => Counter, item => item.units)
