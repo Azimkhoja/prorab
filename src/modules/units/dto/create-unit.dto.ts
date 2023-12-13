@@ -5,5 +5,5 @@ export class CreateUnitDto {
     name: string;
 
     @ApiProperty({example:"тонна"})
-    name_alias: string;
+    name_alias?: string;
 }
