@@ -146,11 +146,17 @@ export class PaymentsService {
     }
 
   async  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    const oldDate = await this.paymentRepo.findOne({where: {id}})
+    const oldData = await this.paymentRepo.findOne({where: {id}})
     
-    if(oldDate.amount != updatePaymentDto.amount){
-      oldDate.amount = updatePaymentDto.amount
-      oldDate.amount_usd 
+    if(oldData.amount != updatePaymentDto.amount){
+     
+      oldData.amount = updatePaymentDto.amount
+      oldData.amount_usd = +(updatePaymentDto.amount / updatePaymentDto.usd_rate).toFixed(2) 
+    
+    }else if (updatePaymentDto.usd_rate != oldData.usd_rate) {
+
+      oldData.usd_rate = updatePaymentDto.usd_rate
+      oldData.amount_usd = +(updatePaymentDto.amount / updatePaymentDto.usd_rate).toFixed(2)
     }
     const updatePayment = await this.paymentRepo.update(id, updatePaymentDto) 
     
