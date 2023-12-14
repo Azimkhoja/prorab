@@ -26,7 +26,7 @@ export class Counter extends Model {
     @Column()
     item_id: number
 
-    @OneToMany(() => Payments, payments => payments.counters, {nullable: true})
+    @OneToMany(() => Payments, payments => payments.counters, {nullable: true, onDelete:'CASCADE', onUpdate: 'CASCADE'})
     payments: Payments[];
-
+        
 }

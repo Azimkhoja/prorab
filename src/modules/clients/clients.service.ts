@@ -68,4 +68,22 @@ export class ClientsService {
       }
     }
   }
+
+  async delete (id: number ){
+    try {
+      const client = await this.clientRepo.delete(id)
+      if(client.affected) {
+        return response.Ok(200, "Deleted")
+      }else {
+        return response.NotFound("not found") 
+      }
+    } catch (error) {
+      if (error.code === '23503') {
+        return response.Failed(400, "Mijoz ochirib bolmaydi ", error.message)
+      } else {
+        console.error('Other error:', error.message);
+      }
+    }
+    
+  }
 }

@@ -30,7 +30,7 @@ export class PaymentsController {
     return this.paymentsService.update(id, updatePaymentDto);
   }
 
-  @Delete('/rem/:')
+  @Delete('/rem/:id')
   remove(@Param('id') id: number) {
     return this.paymentsService.remove(id); 
   }

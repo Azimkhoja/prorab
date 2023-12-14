@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -48,4 +49,11 @@ export class ClientsController {
   getClientById(@Param('id') id: number) {
     return this.clientsService.findOneClient(id);
   }
+
+  @ApiOperation({summary: "Mijoz o'chirish"})
+  @Delete('remove/:id')
+  deleteClient(@Param('id') id: number) {
+    return this.clientsService.delete(id)
+    }
+
 }
