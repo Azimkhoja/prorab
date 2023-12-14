@@ -60,6 +60,7 @@ export class PaymentsService {
       payment.amount = sum;
       payment.usd_rate = createPaymentDto.usd_rate;
       payment.amount_usd = dollar;
+      payment.currency_type = createPaymentDto.currency_type;
       payment.client_id = clientID;
       payment.counter_id = counterID;
       payment.date = createPaymentDto.date || new Date();
@@ -152,7 +153,7 @@ export class PaymentsService {
   async update(id: number, updatePaymentDto: UpdatePaymentDto) {
     const oldData = await this.paymentRepo.findOne({ where: { id } });
     let new_amount_usd
-    
+
     if (
       oldData.amount !== updatePaymentDto.amount ||
       updatePaymentDto.usd_rate !== oldData.usd_rate

@@ -1,3 +1,4 @@
+import { CurrencyType } from 'src/common/enums/currency-type';
 import { Clients } from 'src/modules/clients/entities/client.entity';
 import { Counter } from 'src/modules/counter/entities/counter.entity';
 import Model from 'src/modules/model/model.module';
@@ -13,6 +14,9 @@ export class Payments extends Model {
 
   @Column({ type: 'decimal', scale: 2, precision: 10 })
   amount_usd: number;
+
+  @Column({enum: CurrencyType})
+  currency_type: string;
 
   @Column()
   date: Date;
