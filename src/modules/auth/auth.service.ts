@@ -43,14 +43,14 @@ export class AuthService {
     const user = await this.usersService.findByUsername(data.username);
 
     // agar foydalanuvchi topilmasa xatolik qaytaradi(User not found) 
-    if (!user) throw new BadRequestException('invalid username or password');
+    if (!user) throw new BadRequestException("noto'g'ri username yoki parol");
 
     //loginda kiritgan parol bilan database dagi parolni mosh kelishini tekshiradi
 
     const passwordMatches = await argon2.verify(user.password, data.password);
     
     if (!passwordMatches)
-      throw new BadRequestException('Password is incorrect');
+      throw new BadRequestException("noto'g'ri parol!");
     
     const tokens = await this.getTokens(user.id, user.username);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
@@ -65,12 +65,12 @@ export class AuthService {
   async refreshTokens(userId: number, refreshToken: string) {
     const user = await this.usersService.findById(userId);
     if (!user || !user.token)
-      throw new ForbiddenException('Access Denied');
+      throw new ForbiddenException('Kirish rad etildi');
     const refreshTokenMatches = await argon2.verify(
       user.token,
       refreshToken,
     );
-    if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
+    if (!refreshTokenMatches) throw new ForbiddenException('Kirish rad etildi');
     const tokens = await this.getTokens(user.id, user.username);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
     return tokens;
@@ -80,6 +80,7 @@ export class AuthService {
     return argon2.hash(data);
   }
 
+  //foydalanuvchiga tegishli refresh tokenni yangilaydi
   async updateRefreshToken(userId: number, refreshToken: string) {
     const hashedRefreshToken = await this.hashData(refreshToken);
     await this.usersService.update(userId, {
@@ -87,6 +88,7 @@ export class AuthService {
     });
   }
 
+  // token generatsiya qiladi
   async getTokens(userId: number, username: string) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
