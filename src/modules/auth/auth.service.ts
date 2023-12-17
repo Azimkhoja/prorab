@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  Req,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/modules/users/dto/create-user.dto';
 import { UsersService } from 'src/modules/users/users.service';
@@ -9,6 +10,7 @@ import * as argon2 from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthDto } from './dto/auth.dto';
+import { response } from 'src/common/response/common-responses';
 
 @Injectable()
 export class AuthService {
@@ -42,19 +44,18 @@ export class AuthService {
     // foydalanuvchi bor yoki yo'qligin tekshiradi
     const user = await this.usersService.findByUsername(data.username);
 
-    // agar foydalanuvchi topilmasa xatolik qaytaradi(User not found) 
+    // agar foydalanuvchi topilmasa xatolik qaytaradi(User not found)
     if (!user) throw new BadRequestException("noto'g'ri username yoki parol");
 
     //loginda kiritgan parol bilan database dagi parolni mosh kelishini tekshiradi
 
     const passwordMatches = await argon2.verify(user.password, data.password);
-    
-    if (!passwordMatches)
-      throw new BadRequestException("noto'g'ri parol!");
-    
+
+    if (!passwordMatches) throw new BadRequestException("noto'g'ri parol!");
+
     const tokens = await this.getTokens(user.id, user.username);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
-    
+
     return tokens;
   }
 
@@ -64,12 +65,8 @@ export class AuthService {
 
   async refreshTokens(userId: number, refreshToken: string) {
     const user = await this.usersService.findById(userId);
-    if (!user || !user.token)
-      throw new ForbiddenException('Kirish rad etildi');
-    const refreshTokenMatches = await argon2.verify(
-      user.token,
-      refreshToken,
-    );
+    if (!user || !user.token) throw new ForbiddenException('Kirish rad etildi');
+    const refreshTokenMatches = await argon2.verify(user.token, refreshToken);
     if (!refreshTokenMatches) throw new ForbiddenException('Kirish rad etildi');
     const tokens = await this.getTokens(user.id, user.username);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
@@ -117,5 +114,14 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+
+  async getProfile(user: any) {
+    return response.Ok(200, 'Profile', {
+      firs_tname: user.first_name,
+      last_name: user.last_name,
+      username: user.username,
+      created_at: user.created_at,
+    });
   }
 }

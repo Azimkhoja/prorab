@@ -31,7 +31,10 @@ export class UsersService {
   }
 
   async addDefaultUser() {
-      const user = await this.userRepo.save({first_name: 'Administrator', last_name: 'Administrator',username: "prorab", password:"112233"})
+    const users = await this.userRepo.find()
+    if(!users.length){
+      const user = await this.userRepo.save({first_name: 'Islomjon', last_name: 'Administrator',username: "islomjon", password:"1234"})
+    }
       
     }
   async findById(id: number) {

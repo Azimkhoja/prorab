@@ -7,7 +7,7 @@ import { Payments } from 'src/modules/payments/entities/payment.entity';
 @Entity('Counter')
 export class Counter extends Model {
 
-    @Column()
+    @Column({nullable:true})
     qty: number
     
     @ManyToOne(() => Units, units => units.counters)

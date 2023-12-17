@@ -9,6 +9,7 @@ import { ItemsService } from '../items/items.service';
 import { CounterService } from '../counter/counter.service';
 import { response } from 'src/common/response/common-responses';
 import { SelectPaymentDto } from './dto/expense-or-revenue.dto';
+import { Clients } from '../clients/entities/client.entity';
 
 @Injectable()
 export class PaymentsService {
@@ -87,6 +88,7 @@ export class PaymentsService {
     } else {
       payments = await this.paymentRepo.find({
         relations: ['clients', 'counters.items.category', 'counters.units'],
+        order: {created_at: 'DESC'}
       });
     }
     if (payments && payments.length != 0) {
@@ -126,24 +128,32 @@ export class PaymentsService {
   async calculateInAndOutPayments() {
     const allPayments = await this.paymentRepo.find();
 
-    const { incomingPayment, outgoingPayment } = allPayments.reduce(
+    const { incomingPayment, outgoingPayment, incomePaymentUSD, outPaymentUSD } = allPayments.reduce(
       (totals, payment) => {
         if (payment.client_id !== null) {
           totals.incomingPayment += +payment.amount;
+          totals.incomePaymentUSD += +payment.amount_usd;
         }
         if (payment.counter_id !== null) {
           totals.outgoingPayment += +payment.amount;
+          totals.outPaymentUSD += + payment.amount_usd
         }
         return totals;
       },
-      { incomingPayment: 0, outgoingPayment: 0 },
+      { incomingPayment: 0, outgoingPayment: 0, incomePaymentUSD: 0, outPaymentUSD: 0 },
     );
+    
+    const clients = await this.paymentRepo.manager.getRepository(Clients).count()
 
-    if (allPayments.length != 0) {
+    if (allPayments.length !== 0) {
       return {
-        income: incomingPayment,
-        outgoing: outgoingPayment,
+        incomingPayment,
+        outgoingPayment,
+        incomePaymentUSD,
+        outPaymentUSD,
+        kassaUSD: incomePaymentUSD - outPaymentUSD,
         kassa: incomingPayment - outgoingPayment,
+        clients
       };
     } else {
       return response.NotFound('No payments available');
