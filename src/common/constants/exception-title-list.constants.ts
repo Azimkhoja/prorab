@@ -2,7 +2,7 @@ export const ExceptionTitleList = {
   NotFound: 'Not Found',
   Forbidden: 'Forbidden',
   Unauthorized: 'Unauthorized',
-  IncorrectOldPassword: 'incorrectOldPassword',
+  IncorrectConfirmPassword: 'incorrect Confirm Password',
   UserInactive: 'userInactive',
   BadRequest: 'badRequest',
   InvalidCredentials: 'invalidCredentials',

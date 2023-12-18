@@ -1,6 +1,8 @@
 import {
   BadRequestException,
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Injectable,
   Req,
 } from '@nestjs/common';
@@ -11,6 +13,11 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthDto } from './dto/auth.dto';
 import { response } from 'src/common/response/common-responses';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { User } from '../users/entities/user.entity';
+import { ExceptionTitleList } from 'src/common/constants/exception-title-list.constants';
+import { StatusCodesList } from 'src/common/constants/status-codes-list.constants';
+import { CustomHttpException } from 'src/common/exception/exception-filter';
 
 @Injectable()
 export class AuthService {
@@ -127,5 +134,28 @@ export class AuthService {
       username: user.username,
       created_at: user.created_at,
     });
+  }
+
+  async changePassword(
+    user: User,
+    changePasswordDto: ChangePasswordDto,
+  ){
+    const { confirmPassword, password } = changePasswordDto;
+
+    if(password !== confirmPassword) {
+      return response.Failed(400, "Xato parol tasdiqlash")  
+  }else {
+    
+    let newpassword = await argon2.hash(password);
+    const checkUpdate = await User.update({id: user['sub']}, {password: newpassword})
+    
+    if(checkUpdate.affected){
+      return response.Ok(200, "Parol o'zgartirildi")  
+
+    }else {
+      throw new HttpException("Parol yangilashda xatolik", HttpStatus.CONFLICT)
+    }
+
+  }
   }
 }
