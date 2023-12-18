@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { AuthUser } from 'src/common/decorators/auth-user.decorator';
+import { User } from './entities/user.entity';
 
 @ApiTags("Users")
 @Controller('users')
@@ -23,10 +26,12 @@ export class UsersController {
   findOne(@Param('id') id: number) {
     return this.usersService.findById(id);
   }
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @Patch('edit')
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  update(@AuthUser() user: User, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(user['sub'], updateUserDto);
   }
 
   @Delete(':id')
