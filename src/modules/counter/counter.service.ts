@@ -13,7 +13,7 @@ export class CounterService {
   async createCounter(createCounterDto: CreateCounterDto){
       let counter = new Counter()
 
-      counter.qty = createCounterDto.qty
+      counter.qty = createCounterDto.qty || null
       counter.unit_id = createCounterDto.unit_id
       counter.item_id = createCounterDto.item_id
 

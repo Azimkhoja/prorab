@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Payments } from './entities/payment.entity';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CurrencyType } from 'src/common/enums/currency-type';
 import { ItemsService } from '../items/items.service';
 import { CounterService } from '../counter/counter.service';

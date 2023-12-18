@@ -120,6 +120,7 @@ export class AuthService {
     return response.Ok(200, 'Profile', {
       firs_tname: user.first_name,
       last_name: user.last_name,
+      phone_number: user.phone_number,
       username: user.username,
       created_at: user.created_at,
     });

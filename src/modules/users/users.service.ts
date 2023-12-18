@@ -18,6 +18,7 @@ export class UsersService {
     createdUser.last_name = createUserDto.last_name
     createdUser.username = createUserDto.username
     createdUser.password = createUserDto.password
+    createdUser.phone_number  = createUserDto.phone_number
     
     const hashedPassword = await argon2.hash(createUserDto.password);
 

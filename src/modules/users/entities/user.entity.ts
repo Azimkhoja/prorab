@@ -1,3 +1,4 @@
+import { IsPhoneNumber } from "class-validator";
 import Model from "src/modules/model/model.module";
 import { Column, Entity } from "typeorm";
 
@@ -12,6 +13,9 @@ export class User extends Model{
     
     @Column({nullable: false})
     username: string;
+    
+    @Column({nullable: true})
+    phone_number: string;
     
     @Column({nullable:false})
     password:string;

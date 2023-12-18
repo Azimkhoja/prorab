@@ -10,6 +10,10 @@ export class CreateUserDto {
     @ApiProperty({example: "samandar" })
     username: string;
 
+
+    @ApiProperty({example: "+998 95 5568556" })
+    phone_number: string;
+
     @ApiProperty({example: "112233"})
 
     password: string;
