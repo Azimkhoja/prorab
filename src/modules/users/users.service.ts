@@ -5,13 +5,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as argon2 from 'argon2';
+import { response } from 'src/common/response/common-responses';
 
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
+  constructor(@InjectRepository(User) private userRepo: Repository<User>, ) {}
 
   async create(createUserDto: CreateUserDto) {
+    const foundUser = await this.findByUsername(createUserDto.username)
+    console.log(foundUser);
+    if(foundUser) {
+      return response.AlreadyExists(409, "Bu username ishlatilgan")
+    }
     let createdUser = new User()
     
     createdUser.first_name = createUserDto.first_name

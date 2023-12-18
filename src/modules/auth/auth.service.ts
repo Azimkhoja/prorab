@@ -24,8 +24,9 @@ export class AuthService {
     const userExists = await this.usersService.findByUsername(
       createUserDto.username,
     );
+
     if (userExists) {
-      throw new BadRequestException('User already exists');
+      throw new BadRequestException('Bu username band');
     }
 
     // Hash password
@@ -33,10 +34,12 @@ export class AuthService {
 
     const newUser = await this.usersService.create({
       ...createUserDto,
+      username: createUserDto.username,
       password: hash,
     });
-    const tokens = await this.getTokens(newUser.id, newUser.username);
-    await this.updateRefreshToken(newUser.id, tokens.refreshToken);
+    
+    const tokens = await this.getTokens(newUser['id'], newUser['username']);
+    await this.updateRefreshToken(newUser['id'], tokens.refreshToken);
     return tokens;
   }
 
