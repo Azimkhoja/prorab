@@ -1,8 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SelectPaymentDto } from './dto/expense-or-revenue.dto';
 
 @ApiTags('Payments')
@@ -22,7 +30,7 @@ export class PaymentsController {
 
   @Post('/select')
   expenseOrRevenue(@Body() is_expense: SelectPaymentDto) {
-    return this.paymentsService.findExpensesAndRevenues(is_expense)
+    return this.paymentsService.findExpensesAndRevenues(is_expense);
   }
 
   @Patch(':id')
@@ -32,16 +40,24 @@ export class PaymentsController {
 
   @Delete('/rem/:id')
   remove(@Param('id') id: number) {
-    return this.paymentsService.remove(id); 
+    return this.paymentsService.remove(id);
   }
 
   @Get('/stats')
   incomingAndOutgoingPayments() {
-    return this.paymentsService.calculateInAndOutPayments()
-    
+    return this.paymentsService.calculateInAndOutPayments();
   }
-    @Get('category-payement/:id')
-    findPaymentsByCategory(@Param('id') id: number) {
-      return this.paymentsService.getPaymentsOfCategory(id)
-    }
+  
+  @ApiOperation({ summary: "Toifaga aloqador to'lovlarni olish" })
+  @Get('category-payement/:id')
+  findPaymentsByCategory(@Param('id') id: number) {
+    return this.paymentsService.getPaymentsOfCategory(id);
+  }
+
+
+  @ApiOperation({ summary: "Elementga aloqador to'lovlarni olish" })
+  @Get('item-payement/:id')
+  findPaymentsByItem(@Param('id') id: number) {
+    return this.paymentsService.getPaymentsOfItems(id);
+  }
 }
