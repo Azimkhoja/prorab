@@ -206,4 +206,25 @@ export class PaymentsService {
 
       }
   }
+
+  async getPaymentsOfItems(item_id: number) {
+
+    const itemPayments = await this.paymentRepo.createQueryBuilder('payment')
+    .innerJoinAndSelect('payment.counters', 'counter')
+    .innerJoinAndSelect('counter.items', 'item')
+    .innerJoinAndSelect('payment.units', 'unit')
+    .where('item.id = :item_id', {item_id })
+    .getMany(); 
+  
+    if(!itemPayments.length) {
+
+      return response.NotFound("Berilgan elementga aloqador to'lovlar topilmadi")
+    
+    }else {
+    
+      return response.Ok(200, "Toifa to'lovlari", itemPayments)
+
+    }
+
+  }
 }
