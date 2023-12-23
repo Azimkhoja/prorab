@@ -191,4 +191,14 @@ export class PaymentsService {
       return response.NotFound('payment not found');
     }
   }
+
+  async getPaymentsOfCategory(category_id: number) {
+      const payments = await this.paymentRepo.createQueryBuilder('payment')
+      .innerJoin('payment.counters', 'counter')
+      .innerJoin('counter.items', 'item')
+      .where('item.category_id = :category_id', {category_id })
+      .getMany();
+
+      return payments
+  }
 }

@@ -38,5 +38,10 @@ export class PaymentsController {
   @Get('/stats')
   incomingAndOutgoingPayments() {
     return this.paymentsService.calculateInAndOutPayments()
+    
   }
+    @Get('category-payement/:id')
+    findPaymentsByCategory(@Param('id') id: number) {
+      return this.paymentsService.getPaymentsOfCategory(id)
+    }
 }
