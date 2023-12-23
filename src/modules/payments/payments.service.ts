@@ -212,7 +212,7 @@ export class PaymentsService {
     const itemPayments = await this.paymentRepo.createQueryBuilder('payment')
     .innerJoinAndSelect('payment.counters', 'counter')
     .innerJoinAndSelect('counter.items', 'item')
-    .innerJoinAndSelect('payment.units', 'unit')
+    .innerJoinAndSelect('counter.units', 'unit')
     .where('item.id = :item_id', {item_id })
     .getMany(); 
   
