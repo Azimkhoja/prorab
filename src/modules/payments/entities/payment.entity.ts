@@ -1,4 +1,5 @@
 import { CurrencyType } from 'src/common/enums/currency-type';
+import { Caisher } from 'src/modules/caishers/entities/caisher.entity';
 import { Clients } from 'src/modules/clients/entities/client.entity';
 import { Counter } from 'src/modules/counter/entities/counter.entity';
 import Model from 'src/modules/model/model.module';
@@ -40,5 +41,12 @@ export class Payments extends Model {
   
   @Column({type: 'boolean', default: false})
   is_deleted: boolean
-
+  
+  @ManyToOne(() => Caisher, caishers => caishers.payments)
+  
+  @JoinColumn({name: 'casher_id'})
+  caisher: Caisher;
+  
+  
+  
 }

@@ -17,6 +17,7 @@ import { ItemsModule } from './modules/items/items.module';
 import { CategoryModule } from './modules/category/category.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CaishersModule } from './modules/caishers/caishers.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { AuthModule } from './modules/auth/auth.module';
     CategoryModule,
     UsersModule,
     AuthModule,
+    CaishersModule,
   ],
   controllers: [],
   providers: [],

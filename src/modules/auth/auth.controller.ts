@@ -32,11 +32,11 @@ export class AuthController {
   viewProfile(@Req() req: any) {
     return this.authService.getProfile(req.body.user);
   }
+
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
   @Patch('change-password')
   changePass(@AuthUser() user: User, @Body() passDto: ChangePasswordDto){
-    console.log(user, 'controller');
     return this.authService.changePassword(user, passDto)
   }
 

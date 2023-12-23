@@ -42,7 +42,7 @@ export class UsersService {
   async addDefaultUser() {
     const users = await this.userRepo.find();
     if (!users.length) {
-      const user = await this.userRepo.save({
+      await this.userRepo.save({
         first_name: 'Islomjon',
         last_name: 'Administrator',
         username: 'islomjon',
