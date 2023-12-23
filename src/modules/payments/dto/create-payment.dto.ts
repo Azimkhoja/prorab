@@ -28,4 +28,8 @@ export class CreatePaymentDto {
   @IsIn(['USD', 'UZS'])
   @ApiProperty({ example: 'USD' })
   currency_type: CurrencyType;
+  
+  @ApiProperty({ example: 1 })
+  caisher_id: number;
+
 }

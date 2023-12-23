@@ -38,7 +38,6 @@ export class Payments extends Model {
   @Column({nullable:true})
   client_id: number
   
-  
   @Column({type: 'boolean', default: false})
   is_deleted: boolean
   
@@ -47,6 +46,8 @@ export class Payments extends Model {
   @JoinColumn({name: 'casher_id'})
   caisher: Caisher;
   
+  @Column()
+  caisher_id: number
   
   
 }

@@ -60,7 +60,8 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const checkUser = await this.userRepo.findOne({ where: {username: updateUserDto.username}});
-    if(checkUser) {
+    if(checkUser && checkUser.id !== id) {
+
       return response.AlreadyExists(409, "bu username oldindan mavjud")
     }
     const updating = await this.userRepo.update(id , updateUserDto);
