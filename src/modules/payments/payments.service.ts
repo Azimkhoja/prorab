@@ -214,6 +214,8 @@ export class PaymentsService {
     .innerJoinAndSelect('counter.items', 'item')
     .innerJoinAndSelect('counter.units', 'unit')
     .where('item.id = :item_id', {item_id })
+    .addSelect('SUM(payment.amount)', 'totalAmount')
+    .addSelect('SUM(payment.amount_usd)', 'totalUsdAmount')
     .getMany(); 
   
     if(!itemPayments.length) {
