@@ -65,7 +65,7 @@ export class PaymentsService {
       payment.client_id = clientID;
       payment.counter_id = counterID;
       payment.date = createPaymentDto.date || new Date();
-      payment.caisher_id = createPaymentDto.caisher_id
+      // payment.caisher_id = createPaymentDto.caisher_id
 
       const payment_details = await this.paymentRepo.save(payment);
 
