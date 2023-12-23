@@ -199,6 +199,11 @@ export class PaymentsService {
       .where('item.category_id = :category_id', {category_id })
       .getMany();
 
-      return payments
+      if(!payments.length) {
+        return response.NotFound("Berilgan toifaga aloqador to'lovlar topilmadi")
+      }else {
+        return response.Ok(200, "Toifa to'lovlari", payments)
+
+      }
   }
 }
