@@ -26,17 +26,30 @@ export class CaishersService {
 
   }
 
-  findAll() {
-    return `This action returns all caishers`;
+  async findAllOrOne(id: number) {
+    let caishers
+    if(id != 0 ) {
+      caishers = await this.caisherRepo.findOne({where: {id}})
+    }else {
+      caishers = await this.caisherRepo.find()
+    }
+    if(caishers && caishers.length != 0){
+      return response.Ok(200,"Kassa", caishers )
+     }else {
+       return response.NotFound("Kassa topilmadi")
+   }
+
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} caisher`;
-  }
+ 
+  async update(id: number, updateCaisherDto: UpdateCaisherDto) {
+    const updatedCaisher = await this.caisherRepo.update({id: id}, updateCaisherDto)
+    if(updatedCaisher.affected) {
+      return response.Ok(200, "Kassa tahrirlandi")
+    }else {
+      return response.NotFound("Kassa  topilmadi")
+    } }
 
-  update(id: number, updateCaisherDto: UpdateCaisherDto) {
-    return `This action updates a #${id} caisher`;
-  }
 
   remove(id: number) {
     return `This action removes a #${id} caisher`;

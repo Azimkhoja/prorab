@@ -2,8 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CaishersService } from './caishers.service';
 import { CreateCaisherDto } from './dto/create-caisher.dto';
 import { UpdateCaisherDto } from './dto/update-caisher.dto';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags("Caisher")
 @Controller('caishers')
 export class CaishersController {
   constructor(private readonly caishersService: CaishersService) {}
@@ -14,15 +15,11 @@ export class CaishersController {
     return this.caishersService.create(createCaisherDto);
   }
 
-  @Get()
-  findAll() {
-    return this.caishersService.findAll();
+  @Get('all/:id')
+  async findAll(@Param('id') id: number) {
+    return this.caishersService.findAllOrOne(id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.caishersService.findOne(+id);
-  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCaisherDto: UpdateCaisherDto) {

@@ -43,10 +43,19 @@ export class PaymentsController {
     return this.paymentsService.remove(id);
   }
 
-  @Get('/stats')
-  incomingAndOutgoingPayments() {
-    return this.paymentsService.calculateInAndOutPayments();
+  @ApiOperation({ summary: "Kassa kirim chiqim malumotlarini olish" })
+  @Get('/stats/:caisher_id')
+  incomingAndOutgoingPayments(@Param('caisher_id') caisher_id: number) {
+    return this.paymentsService.calculateInAndOutPayments(caisher_id);
   }
+  
+
+  @ApiOperation({ summary: "Kassa to'lovlarni olish" })
+  @Get('by/:caisher_id')
+    findPaymentsByCaisher(@Param('caisher_id') caisher_id: number) {
+      return this.paymentsService.getPaymentsByCaisher(caisher_id);
+    }
+
   
   @ApiOperation({ summary: "Toifaga aloqador to'lovlarni olish" })
   @Get('category-payement/:id')

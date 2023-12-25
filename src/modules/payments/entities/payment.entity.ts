@@ -41,13 +41,13 @@ export class Payments extends Model {
   @Column({type: 'boolean', default: false})
   is_deleted: boolean
   
-  // @ManyToOne(() => Caisher, caishers => caishers.payments)
+  @ManyToOne(() => Caisher, caishers => caishers.payments)
   
-  // @JoinColumn({name: 'casher_id'})
-  // caisher: Caisher;
+  @JoinColumn({name: 'casher_id'})
+  caisher: Caisher;
   
-  // @Column()
-  // caisher_id: number
+  @Column()
+  caisher_id: number
   
   
 }

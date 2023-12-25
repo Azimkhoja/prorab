@@ -65,7 +65,7 @@ export class PaymentsService {
       payment.client_id = clientID;
       payment.counter_id = counterID;
       payment.date = createPaymentDto.date || new Date();
-      // payment.caisher_id = createPaymentDto.caisher_id
+      payment.caisher_id = createPaymentDto.caisher_id
 
       const payment_details = await this.paymentRepo.save(payment);
 
@@ -126,8 +126,12 @@ export class PaymentsService {
     }
   }
 
-  async calculateInAndOutPayments() {
-    const allPayments = await this.paymentRepo.find();
+  async calculateInAndOutPayments(caisher_id: number) {
+    const allPayments = await this.paymentRepo.find({where: {caisher_id}});
+
+    // if(onlyData) {
+    //   return allPayments
+    // }
 
     const { incomingPayment, outgoingPayment, incomePaymentUSD, outPaymentUSD } = allPayments.reduce(
       (totals, payment) => {
@@ -144,7 +148,7 @@ export class PaymentsService {
       { incomingPayment: 0, outgoingPayment: 0, incomePaymentUSD: 0, outPaymentUSD: 0 },
     );
     
-    const clients = await this.paymentRepo.manager.getRepository(Clients).count()
+    // const clients = await this.paymentRepo.manager.getRepository(Clients).count()
 
     if (allPayments.length !== 0) {
       return {
@@ -154,7 +158,7 @@ export class PaymentsService {
         outPaymentUSD,
         kassaUSD: incomePaymentUSD - outPaymentUSD,
         kassa: incomingPayment - outgoingPayment,
-        clients
+        // clients
       };
     } else {
       return response.NotFound('No payments available');
@@ -190,6 +194,15 @@ export class PaymentsService {
       return response.Ok(200, 'deleted');
     } else {
       return response.NotFound('payment not found');
+    }
+  }
+
+  async getPaymentsByCaisher(id: number) {
+    const result = await this.paymentRepo.find({where: {caisher_id: id}})
+    if(result.length){
+        return response.Ok(200, "Kassa to'lovlari", result)
+    }else{
+      return response.NotFound('payment not found by given caisher id');
     }
   }
 

@@ -12,8 +12,8 @@ export class Caisher extends Model {
     @Column({})
     is_active: boolean;
 
-    // @OneToMany(() => Payments, payments => payments.caisher)
-    // payments: Payments[]
+    @OneToMany(() => Payments, payments => payments.caisher)
+    payments: Payments[]
 
 
 }
