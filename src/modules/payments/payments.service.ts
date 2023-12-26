@@ -198,7 +198,9 @@ export class PaymentsService {
   }
 
   async getPaymentsByCaisher(id: number) {
-    const result = await this.paymentRepo.find({where: {caisher_id: id}})
+    const result = await this.paymentRepo.find({where: {caisher_id: id}, relations: ['clients', 'counters.items.category', 'counters.units'],
+    order: {created_at: 'DESC'}})
+    
     if(result.length){
         return response.Ok(200, "Kassa to'lovlari", result)
     }else{
