@@ -5,8 +5,8 @@ export class CreateCaisherDto {
     @ApiProperty({example: "Oxygen"})
     name: string
 
-    @ApiProperty({example: true})
-    is_active: boolean
+    // @ApiProperty({example: true})
+    // is_active?: boolean
 
 }
 

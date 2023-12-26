@@ -19,6 +19,8 @@ export class CaishersService {
 
     let new_caisher = new Caisher()
     new_caisher.name = createCaisherDto.name
+    new_caisher.is_active = true
+
 
     new_caisher = await this.caisherRepo.save(new_caisher)
   
@@ -43,7 +45,13 @@ export class CaishersService {
 
  
   async update(id: number, updateCaisherDto: UpdateCaisherDto) {
+    const check = await this.caisherRepo.findOne({where:{name: updateCaisherDto.name}})
+    if(check) {
+      return response.AlreadyExists(409, "bu nomdagi kassa mavjud")
+    }
+
     const updatedCaisher = await this.caisherRepo.update({id: id}, updateCaisherDto)
+   
     if(updatedCaisher.affected) {
       return response.Ok(200, "Kassa tahrirlandi")
     }else {
