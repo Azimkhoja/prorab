@@ -27,7 +27,7 @@ export class CaishersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.caishersService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.caishersService.remove(id);
   }
 }
