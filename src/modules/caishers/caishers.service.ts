@@ -71,6 +71,7 @@ export class CaishersService {
 
   async remove(id: number) {
     try {
+
       const remCaisher = await this.caisherRepo.delete({ id: id });
 
       if (remCaisher.affected) {
@@ -78,7 +79,9 @@ export class CaishersService {
       } else {
         return response.NotFound("Kassa topilmadi");
       }
+
     } catch (error) {
+      
       if (error.code === '23503') {
         return response.Failed(400, "Kassani o'chirib bolmaydi", error.message);
       } else {

@@ -12,7 +12,7 @@ export class Caisher extends Model {
     @Column({})
     is_active: boolean;
 
-    @OneToMany(() => Payments, payments => payments.caisher)
+    @OneToMany(() => Payments, payments => payments.caisher, {onDelete: 'RESTRICT', nullable: false})
     payments: Payments[]
 
 

@@ -43,10 +43,10 @@ export class Payments extends Model {
   
   @ManyToOne(() => Caisher, caishers => caishers.payments)
   
-  @JoinColumn({name: 'casher_id'})
+  @JoinColumn({name: 'caisher_id'})
   caisher: Caisher;
   
-  @Column()
+  @Column({nullable: false})
   caisher_id: number
   
   
