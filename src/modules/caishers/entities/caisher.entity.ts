@@ -1,3 +1,4 @@
+import { Clients } from "src/modules/clients/entities/client.entity";
 import Model from "src/modules/model/model.module";
 import { Payments } from "src/modules/payments/entities/payment.entity";
 import { Column, Entity, OneToMany } from "typeorm";
@@ -15,5 +16,7 @@ export class Caisher extends Model {
     @OneToMany(() => Payments, payments => payments.caisher, {onDelete: 'RESTRICT', nullable: false})
     payments: Payments[]
 
+    @OneToMany(() => Clients, clients => clients.caisher)
+    clients: Clients[]
 
 }

@@ -49,6 +49,13 @@ export class ClientsController {
   getClientById(@Param('id') id: number) {
     return this.clientsService.findOneClient(id);
   }
+  
+  @ApiOperation({ summary: "Kassaga tegishli mijozlani olish" })
+  @ApiResponse({ status: 200, type: Clients })
+  @Get('/by/:caisher_id')
+  getClientByCaisherID(@Param('caisher_id') id: number) {
+    return this.clientsService.getClientByCaisher(id);
+  }
 
   @ApiOperation({summary: "Mijoz o'chirish"})
   @Delete('remove/:id')

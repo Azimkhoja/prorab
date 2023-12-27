@@ -10,4 +10,8 @@ export class CreateClientDto {
 
   @ApiProperty({ example: 'izoh' })
   description: string;
+
+  @ApiProperty({ example: 1 })
+  caisher_id: number
+
 }
