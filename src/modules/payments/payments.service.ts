@@ -208,11 +208,11 @@ export class PaymentsService {
     }
   }
 
-  async getPaymentsOfCategory(category_id: number) {
+  async getPaymentsOfCategory(category_id: number, caisher_id: number) {
       const payments = await this.paymentRepo.createQueryBuilder('payment')
       .innerJoinAndSelect('payment.counters', 'counter')
-      .innerJoinAndSelect('counter.items', 'item')
-      .where('item.category_id = :category_id', {category_id })
+      .innerJoinAndSelect('counter.items', 'item', 'item.category_id = :category_id', {category_id })
+      .where('caisher_id = :caisher_id', {caisher_id })
       .getMany();
 
       if(!payments.length) {
@@ -223,15 +223,16 @@ export class PaymentsService {
       }
   }
 
-  async getPaymentsOfItems(item_id: number) {
+  async getPaymentsOfItems(item_id: number, caisher_id: number) {
 
     const itemPayments = await this.paymentRepo.createQueryBuilder('payment')
     .innerJoinAndSelect('payment.counters', 'counter')
-    .innerJoinAndSelect('counter.items', 'item')
+    .innerJoinAndSelect('counter.items', 'item', 'item.id = :item_id', {item_id } )
     .innerJoinAndSelect('counter.units', 'unit')
-    .where('item.id = :item_id', {item_id })
+    .where('caisher_id = :caisher_id', {caisher_id })
     .getMany(); 
   
+    console.log(itemPayments);
     if(!itemPayments.length) {
 
       return response.NotFound("Berilgan elementga aloqador to'lovlar topilmadi")

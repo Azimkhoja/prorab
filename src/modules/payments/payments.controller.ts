@@ -58,15 +58,15 @@ export class PaymentsController {
 
   
   @ApiOperation({ summary: "Toifaga aloqador to'lovlarni olish" })
-  @Get('category-payement/:id')
-  findPaymentsByCategory(@Param('id') id: number) {
-    return this.paymentsService.getPaymentsOfCategory(id);
+  @Get('category-payement/:category_id/:caisher_id')
+  findPaymentsByCategory(@Param('category_id') category_id: number, @Param('caisher_id') caisher_id: number) {
+    return this.paymentsService.getPaymentsOfCategory(category_id, caisher_id);
   }
 
 
   @ApiOperation({ summary: "Elementga aloqador to'lovlarni olish" })
-  @Get('item-payement/:id')
-  findPaymentsByItem(@Param('id') id: number) {
-    return this.paymentsService.getPaymentsOfItems(id);
+  @Get('item-payement/:item_id/:caisher_id')
+  findPaymentsByItem(@Param('item_id') item_id: number, @Param('caisher_id') caisher_id: number) {
+    return this.paymentsService.getPaymentsOfItems(item_id, caisher_id);
   }
 }
