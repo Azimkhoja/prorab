@@ -22,8 +22,8 @@ export class CaishersController {
 
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCaisherDto: UpdateCaisherDto) {
-    return this.caishersService.update(+id, updateCaisherDto);
+  update(@Param('id') id: number, @Body() updateCaisherDto: UpdateCaisherDto) {
+    return this.caishersService.update(id, updateCaisherDto);
   }
 
   @Delete(':id')

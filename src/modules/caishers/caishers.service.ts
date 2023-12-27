@@ -27,10 +27,10 @@ export class CaishersService {
 
     new_caisher = await this.caisherRepo.save(new_caisher);
 
-    if(new_caisher) {
+    if (new_caisher) {
       return response.Ok(201, 'Kassa yaratildi');
-    }else {
-      return response.Failed(400, "Kassa yaratishda xatolik")
+    } else {
+      return response.Failed(400, 'Kassa yaratishda xatolik');
     }
   }
 
@@ -40,7 +40,7 @@ export class CaishersService {
     if (id != 0) {
       caishers = await this.caisherRepo.findOne({ where: { id } });
     } else {
-      caishers = await this.caisherRepo.find({order: {created_at : "DESC"}});
+      caishers = await this.caisherRepo.find({ order: { created_at: 'DESC' } });
     }
     if (caishers && caishers.length != 0) {
       return response.Ok(200, 'Kassa', caishers);
@@ -71,17 +71,14 @@ export class CaishersService {
 
   async remove(id: number) {
     try {
-
       const remCaisher = await this.caisherRepo.delete({ id: id });
 
       if (remCaisher.affected) {
         return response.Ok(200, "kassa o'chirildi");
       } else {
-        return response.NotFound("Kassa topilmadi");
+        return response.NotFound('Kassa topilmadi');
       }
-
     } catch (error) {
-      
       if (error.code === '23503') {
         return response.Failed(400, "Kassani o'chirib bolmaydi", error.message);
       } else {
