@@ -45,12 +45,12 @@ export class PaymentsService {
 
       if (createPaymentDto.currency_type === CurrencyType.USD) {
         sum = +(createPaymentDto.amount * createPaymentDto.usd_rate).toFixed(2);
-        dollar = createPaymentDto.amount;
+        dollar = +createPaymentDto.amount;
       } else {
         dollar = +(createPaymentDto.amount / createPaymentDto.usd_rate).toFixed(
           2,
         );
-        sum = createPaymentDto.amount;
+        sum = +createPaymentDto.amount;
       }
 
       // responsening counter_id si null bo'lsa bu kirim to'lovi boladi aks holda chiqim
@@ -58,7 +58,7 @@ export class PaymentsService {
       // to'lovni amalga oshirish
 
       const payment = new Payments();
-      payment.amount = sum;
+      payment.amount = +sum;
       payment.usd_rate = createPaymentDto.usd_rate;
       payment.amount_usd = dollar;
       payment.currency_type = createPaymentDto.currency_type;
@@ -219,6 +219,7 @@ export class PaymentsService {
       if(!payments.length) {
         return response.NotFound("Berilgan toifaga aloqador to'lovlar topilmadi")
       }else {
+        payments[payments.length -1]['jami'] =  this.calculate(payments)
         return response.Ok(200, "Toifa to'lovlari", payments)
 
       }
@@ -233,16 +234,28 @@ export class PaymentsService {
     .where('caisher_id = :caisher_id', {caisher_id })
     .getMany(); 
   
-    console.log(itemPayments);
     if(!itemPayments.length) {
 
       return response.NotFound("Berilgan elementga aloqador to'lovlar topilmadi")
     
     }else {
     
+      itemPayments[itemPayments.length -1]['jami'] = this.calculate(itemPayments)
       return response.Ok(200, "Toifa to'lovlari", itemPayments)
 
     }
 
   }
+
+   calculate(data: any) {
+    return  data.reduce(
+      (accumulator, payment) => {
+        accumulator.totalAmount +=  +(payment.amount);
+        accumulator.totalUsdAmount +=  +(payment.amount_usd);
+        accumulator.totalQty +=  +(payment.counters.qty);
+        return accumulator;
+      },
+      { totalAmount: 0, totalUsdAmount: 0, totalQty: 0 }
+      );
+  } 
 }

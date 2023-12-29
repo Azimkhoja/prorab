@@ -47,7 +47,7 @@ export class ClientsController {
   @ApiResponse({ status: 200, type: Clients })
   @Get('/:id')
   getClientById(@Param('id') id: number) {
-    return this.clientsService.findOneClient(id);
+    return this.clientsService.findOneClientPayments(id);
   }
   
   @ApiOperation({ summary: "Kassaga tegishli mijozlani olish" })

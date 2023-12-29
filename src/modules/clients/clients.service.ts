@@ -58,18 +58,28 @@ export class ClientsService {
     return response.Ok(200, 'clients', clients);
   }
 
-  async findOneClient(id: number) {
+  async findOneClientPayments(id: number) {
     const client = await this.clientRepo
       .createQueryBuilder('clients')
       .leftJoinAndSelect('clients.payments', 'payment')
       .leftJoinAndSelect('payment.caisher', 'caisher')
       .where('payment.client_id = :id', { id })
-      .getMany();
+      .getOne();
 
-    if (client.length != 0) {
-      return response.Ok(200, 'clients', client);
+      const sums = client.payments.reduce(
+        (accumulator, payment) => {
+          accumulator.totalAmount +=  +(payment.amount);
+          accumulator.totalUsdAmount +=  +(payment.amount_usd);
+          return accumulator;
+        },
+        { totalAmount: 0, totalUsdAmount: 0}
+        );
+
+    if (client.payments.length != 0) {
+      client['jami'] = sums
+      return response.Ok(200, 'payment of client', client);
     }
-    return response.NotFound('Clients not found');
+    return response.NotFound('Client payments not found');
   }
 
   async editClientInfo(id: number, updateClientDto: UpdateClientDto) {
